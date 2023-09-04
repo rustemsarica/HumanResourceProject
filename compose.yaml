@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  react-app:
+    build:
+      context: app_frontend
+      dockerfile: Dockerfile
+      args:
+        - REACT_APP_API_BASE_URL=http://localhost:8080/api
+    ports:
+      - 3000:80
+  mysql:
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=mydatabase'
+      - 'MYSQL_PASSWORD=secret'
+      - 'MYSQL_ROOT_PASSWORD=verysecret'
+      - 'MYSQL_USER=myuser'
+    ports:
+      - '3306'
+  phpmyadmin:
+    image: 'phpmyadmin'
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - 8081:80
