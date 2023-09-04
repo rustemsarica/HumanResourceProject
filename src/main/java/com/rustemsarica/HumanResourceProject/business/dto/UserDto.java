@@ -19,7 +19,7 @@ public class UserDto {
 
     private String username;
 
-    private float balance;
+    private float salary;
 
     // private List<AccountTransactionEntity> accountTransactionEntities;
 

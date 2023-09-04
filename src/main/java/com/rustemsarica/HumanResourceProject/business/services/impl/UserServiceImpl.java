@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -96,6 +98,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(UserEntity userEntity) {
         userRepository.save(userEntity);
+    }
+
+    @Override
+    public Page<UserEntity> getAllUsersPaginate(Pageable pageable) {
+        return userRepository.findAll(pageable);    
     }
 
     

@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class UserEntity extends BaseEntity{
     
-    @JsonIgnore
     private UserRole role = UserRole.ROLE_USER;
 
     private String name;
@@ -38,9 +37,10 @@ public class UserEntity extends BaseEntity{
     private boolean accountNonLocked = true;
 
     @Min(value = 0)
-    private float sallary=0;
+    private float salary=0;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<DayOffEntity> dayOffs;
 
     public List<DayOffEntity> getDayOffs() {
@@ -51,12 +51,12 @@ public class UserEntity extends BaseEntity{
         this.dayOffs = dayOffs;
     }
 
-    public float getSallary() {
-        return sallary;
+    public float getSalary() {
+        return salary;
     }
 
-    public void setSallary(float sallary) {
-        this.sallary = sallary;
+    public void setSalary(float salary) {
+        this.salary = salary;
     }
 
     public String getName() {

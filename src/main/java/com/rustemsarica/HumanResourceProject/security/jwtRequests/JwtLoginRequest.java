@@ -17,6 +17,6 @@ public class JwtLoginRequest implements Serializable{
     @NotEmpty
     private String username;
     @NotEmpty
-    @Size(min = 6, max = 255, message = "Password must be at least 6 characters long")
+    @Size(min = 6, max = 255)
     private String password;
 }

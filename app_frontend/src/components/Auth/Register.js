@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -22,10 +22,13 @@ import { Container } from "@mui/material";
 import axiosClient from "../../axios-client";
 import {  enqueueSnackbar } from 'notistack';
 import { useStateContext } from "../../components/contexts/ContextProvider";
+import { firstUpperCase } from "../contexts/helpers";
 
 function Register(){
     const {setPageName} = useStateContext();
-    setPageName("Register");
+    useEffect(()=>{
+        setPageName("Register");
+    },[])
 
     const [role, setRole] = useState("");
     const [name, setName] = useState("");
@@ -53,6 +56,10 @@ function Register(){
             password: password,
         })
         .then(({data}) => {
+            setRole(null);
+            setName(null);
+            setUsername(null);
+            setPassword(null);
             enqueueSnackbar(data,{variant:"success"})
         })
         .catch((err) => {
@@ -76,8 +83,8 @@ function Register(){
                             <CardContent> 
                                 { errors &&
                                 <Stack sx={{ width: '100%' }} spacing={2}>
-                                    {errors.map((key) => (
-                                        <Alert key={key} severity="error">{key.message}</Alert>
+                                    {errors.map((key,i) => (
+                                        <Alert key={key+i} severity="error">{firstUpperCase(key.field)+" "+key.message}</Alert>
                                     ))}
                                 </Stack>
                                 }

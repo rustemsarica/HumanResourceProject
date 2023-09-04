@@ -11,18 +11,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class JwtRegisterRequest {
-    @NotEmpty(message = "Name is required")
+    @NotEmpty
     private String name;
 
-    @NotEmpty(message = "Username is required")
-    @Email(regexp=".*@.*\\..*", message = "Format is invalid")
+    @NotEmpty
+    @Email(regexp=".*@.*\\..*")
     @Column(unique = true)
     private String username;
 
-    @NotEmpty(message = "Password is required")
-    @Size(min = 6, max = 255, message = "Password must be at least 6 characters long")
+    @NotEmpty
+    @Size(min = 6, max = 255)
     private String password;
 
-    @NotEmpty(message = "Role is required")
+    @NotEmpty
     private String role;
 }

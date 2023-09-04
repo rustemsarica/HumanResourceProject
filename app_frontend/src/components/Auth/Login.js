@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
 import Card from '@mui/material/Card';
@@ -15,18 +14,21 @@ import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Grid from '@mui/material/Grid';
-import { useStateContext } from "../../components/contexts/ContextProvider";
+import { useStateContext } from "../contexts/ContextProvider";
 import { Container } from "@mui/material";
 import axiosClient from "../../axios-client";
 import {  enqueueSnackbar } from 'notistack';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import { firstUpperCase } from "../contexts/helpers";
 
 function Login(){
-    const navigate = useNavigate();
+    const navigate = useNavigate();   
+
     const [errors, setErrors] = useState(null);
 
-    const {setName, setUserId, setToken, setRefreshToken, setRole, setIsAdmin, setPageName} = useStateContext();
+    const {setName, setUserId, setToken, setRefreshToken, setRole, setIsAdmin, setPageName} = useStateContext(); 
+    
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
 
@@ -38,23 +40,28 @@ function Login(){
         event.preventDefault();
     };
 
+    useEffect(()=>{
+        setPageName("Login");
+    },[])
+
     const onSubmit = (ev)=>{
         ev.preventDefault()
         axiosClient.post('/login',{
             username: username,
             password: password,
         })
-        .then(({data}) => {
-            if(data.id>0){
-                setName(data.username);
-                setUserId(data.id);
-                setToken(data.token);
-                setRefreshToken(data.refreshToken);
-                setRole(data.role);
-                setIsAdmin(data.role==="ROLE_ADMIN");
+        .then((response) => {
+            console.log(response)
+            if(response.status===200){
+                setName(response.data.username);
+                setUserId(response.data.id);
+                setToken(response.data.token);
+                setRefreshToken(response.data.refreshToken);
+                setRole(response.data.role);
+                setIsAdmin(response.data.role==="ROLE_ADMIN");
                 navigate("/");
             }else{
-                enqueueSnackbar(data.token,{variant:"error"})
+                enqueueSnackbar(response.token,{variant:"error"})
             }
             
         })
@@ -70,10 +77,6 @@ function Login(){
         })
     }
 
-    useEffect(()=>{
-        setPageName("Login");
-    })
-
 
     return (
         <Container>
@@ -84,8 +87,8 @@ function Login(){
                             <CardContent>
                             { errors &&
                                 <Stack sx={{ width: '100%' }} spacing={2}>
-                                    {errors.map((key) => (
-                                        <Alert key={key} severity="error">{key.message}</Alert>
+                                    {errors.map((key,i) => (
+                                        <Alert key={key+i} severity="error">{firstUpperCase(key.field)+" "+key.message}</Alert>
                                     ))}
                                 </Stack>
                                 }                                

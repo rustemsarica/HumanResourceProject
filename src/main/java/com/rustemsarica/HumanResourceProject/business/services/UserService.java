@@ -3,6 +3,8 @@ package com.rustemsarica.HumanResourceProject.business.services;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import com.rustemsarica.HumanResourceProject.business.dto.UserDto;
@@ -22,4 +24,5 @@ public interface UserService {
     //model mapper
     public UserDto entityToDto(UserEntity user);
     public UserEntity dtoToEntity(UserDto userDto);
+    public Page<UserEntity> getAllUsersPaginate(Pageable pageable);
 }
